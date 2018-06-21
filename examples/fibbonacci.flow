@@ -1,0 +1,2 @@
+{16 Fibbonacci numbers}
+0i:1a:1b:[i;16=~][a;$.", "$b;$a:+b:i;1+i:]#"..."

@@ -1,0 +1,134 @@
+Flow 1.0 language reference
+
+Flow is a simple stacked programming language, with a simple but strange looking syntax. 
+Flow is a descendant of the FALSE programming language, and many programs on FALSE also work in Flow, after making some changes. 
+
+First of all, Flow uses only ASCII characters, which you can be sure of after reading this brief help and does not use the assembler insertion command (it is used to call extension functions). 
+
+These features make Flow a more practical language compared to its predecessor and I hope that you will also like it.
+
+Data types:
+	integer (for example: 0, 34, 23)
+	characters (for example: 'A, '0, '-)
+
+	Pay attention to the following fact: you can not directly put a negative value on the stack, indicating the minus sign before the number itself. Instead, you must put the unsigned minus number on the stack, and then apply the unary minus operation.
+
+Math operations:
+	+ addition          (for example, 1 2 + adds 1 and 2)
+	- subtraction       (for example, 1 2 - subtracts 1 of 2)
+	* multiplication    (for example, 1 2 * multiplies 1 by 2)
+	/ division			(for example, 1 2 / divides 1 by 2)
+	_ unary minus		(for example, 1_ change sign of 1)
+
+Comparison operations:
+	= equals to 		(for example, 1 2 = equals 0, i.e false)
+	> greather than     (for example, 1 2 > equals 0, i.e false)
+
+	In Flow, all comparison operations and all Boolean operations have a value of -1 interpreted as true, and a value of 0 as false.
+
+	Note. Flow does not have a separate operation for inequality, however, you can emulate it by using a logical negation of equality.
+
+Logical operations:
+	~ logical NOT
+	& logical AND
+	| logical OR
+
+Stack operations:
+	$	duplicate top stack item					(for example, 1 $ equals 1 1)
+	%	drop top stack items       					(for example, 1 2 % equals 1)
+	\	swap two topmost stack items				(for example, 1 2 \ equals 2 1)
+	@	rotate three topmost stack items			(for example, 1 2 3 @ equals 2 3 1)
+	(	copy n-th stack element to top of stack     (for example, 7 8 9 2 ( equals 7 8 9 7)
+
+Global variables:
+	In Flow, you can use variables, however, they are global and the whole program sees them. 
+	In addition, variables in Flow can only have one-letter names, but Flow itself distinguishes the case of characters, so instead of 26 variables (names are given in letters of the English alphabet), you get 52 variables at your disposal!
+
+	: assignment value to variable 					(for example, 12a: pushes value 12 to variable a)
+	; push variable value onto stack 				(for example, a; pushes value of a onto stack)
+	variable_name push variable name onto stack 	(for example, a pushes a onto stack without value extraction)
+
+Lambda-expression:
+	In Flow, any expression enclosed in [ and ] is a lambda expression. 
+	All lambda expressions in Flow operate on the stack and therefore do not need arguments, as well as return values.
+	The square brackets put the expression enclosed in the stack, which also means the ability to assign a variable expression and also the ability to pass one expression to another.
+
+	[expression] put expression on stack 						 (for example, [1+] pushes function increment to stack)
+	[expression]variable_name: assigment expression to variable  (for example, [1+]a: assigns function 1+ to variable a)
+	! apply expression on stack to stack                         (for example, ! apply function from stack to stack)
+
+	Otherwise, operations with lambda expressions are similar to those with global variables, only the operation of applying the function (possibly extracted from the variable on the stack) is added.
+
+	For example:
+		[1+]i: 	create increment function and assigns them to i
+		2i;!    push 2 onto stack and apply function i to them
+
+Control structures:
+	Flow has two control structures, if and while, which are denoted by signs ? and #.
+	
+	condition_expression[result_expression]? 	(for example, a;=2[1+]? if a equals 2, than increment top of stack)
+	[condition_expression][body_cycle_expression]# (for example, [a;5~=][a;1+a:]# while a not equals 5, increment a)
+
+	Note. The if structure does not have an else branch, however, the missing branch can be emulated by copying the result of the condition and its subsequent logical negation.
+
+	Example of this idiom:
+		a;1=$["true"]?~["false"]? if a equals 1, print "true", else print "false"
+
+Input/Output
+	In Flow, there are a few simple commands to provide some input / output operations. 
+	The first thing to remember is that I / O streams are buffered and sometimes need to be flush.
+
+	) flush I/O stdin/stdout
+	. print integer from top of stack to stdout 	(for example, 123 . prints 123 to stdout)
+	, print character from top of stack to stdout 	(for example, 65 , prints A to stdout)
+	^ read character from stdin 					(for example, ^ ,  prints entered character to stdout)
+	"" print string	to stdout						(for example, "test" prints test to stdout)
+
+Strings:
+	Unfortunately, Flow does not have line support, however, you can print a line by placing it in double quotes. 
+	Also, the string can not be put on the stack, but the string can be part of the lambda expression.
+
+Comments:
+	Flow has built-in support for multi-line and single-line comments, which are indicated by including a comment line in curly braces.
+
+	{comment_text} create comment for fragment of program
+
+Extended function:
+	Unlike its predecessor, the FALSE programming language, Flow does not support one of the commands, denoted as an oblique apostrophe (`). In FALSE, this command was used to insert assembler code, in Flow this command calls one of the built-in predefined extension functions.
+	In order to use any of the extension functions, it is necessary to put its arguments on the stack, then the function number on the stack and call the extended function, specifying the `.
+
+	At the moment, the following extension functions are defined in Flow (listed with their numbers):
+		0 get the depth of the stack
+		1 bitwise AND
+		2 bitwise OR
+		3 bitwise XOR
+		4 logical NOT
+
+	You can define your own extension functions (if you know the D programming language) by simply deriving the inheritance from the basic abstract class ModernFalseFunction, which is in the core / extended.d file and adding the required class to the extended functions dictionary. 
+	The file itself is an excellent example of creating extension functions and is well commented on.
+
+
+Examples of Flow programs:
+	{16 Fibbonacci numbers}
+	0i:1a:1b:[i;16=~][a;$.", "$b;$a:+b:i;1+i:]#"..."
+	
+	{Prime numbers from 100 to 1} 
+	[\$@$@\/*-0=]d:[$2/[\$@$@\d;!~][1-]#1=\%]p:[[$1=~][$p;![$." "]?1-]#]f:99f;!
+	
+	{Quine}
+	["'[,34,$!34,'],!"]'[,34,$!34,'],!
+	
+	{Print "Polina"}
+	[$,]a:80a;!31+a;![3-a;!]b:b;!b;!5+a;!13-,
+	
+	{Print alphabet and some another characters}
+	123a:[a;65=~][a;1-$a:,]#
+	
+	{Extension function test} 
+	10 255 3`.
+	
+	{Factorial for number from 1 to 17}
+	0i:1f:[i;17=~][i; $."! = " 1+$i: f;$.10, *f:]#
+	
+	{Alphabet}
+	[32+]c:65a:a;26+b:[a;b;=~][a;$$,32+,1+a:]#

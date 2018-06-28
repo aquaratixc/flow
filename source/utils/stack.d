@@ -85,5 +85,11 @@ class Stack(T)
 			int n = pop.to!int;
 			push(elements[$-n-1]);
 		}
+
+		// clear stack
+		void clear()
+		{
+			elements = typeof(elements).init;
+		}
 	}
 }

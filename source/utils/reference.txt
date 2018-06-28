@@ -1,4 +1,4 @@
-Flow 1.0 language reference
+Flow language reference
 
 Flow is a simple stacked programming language, with a simple but strange looking syntax. 
 Flow is a descendant of the FALSE programming language, and many programs on FALSE also work in Flow, after making some changes. 
@@ -6,6 +6,8 @@ Flow is a descendant of the FALSE programming language, and many programs on FAL
 First of all, Flow uses only ASCII characters, which you can be sure of after reading this brief help and does not use the assembler insertion command (it is used to call extension functions). 
 
 These features make Flow a more practical language compared to its predecessor and I hope that you will also like it.
+
+Flow has flow :)
 
 Data types:
 	integer (for example: 0, 34, 23)

@@ -409,9 +409,22 @@ class ModernFALSE
 		//writeln;
 	}
 
+	// reset interpreter
+	auto reset()
+	{
+		stack.clear;
+		variables.clear;
+	}
+
 	// get FALSE stack
 	auto @property getStack()
 	{
 		return stack;
+	}
+
+	// get all variables
+	auto @property getVariables()
+	{
+		return variables;
 	}
 }

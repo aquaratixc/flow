@@ -4,6 +4,7 @@ private
 {
 	import std.ascii;
 	import std.conv;
+	import std.math : abs;
 	import std.stdio;
 	import std.string;
 	import core.exception : RangeError;
@@ -13,8 +14,8 @@ private
 	import utils.stack;
 }
 
-// FALSE programming language interpreter
-class ModernFALSE
+// Flow programming language interpreter
+class Flow
 {
 	private
 	{
@@ -27,16 +28,18 @@ class ModernFALSE
 		// features of modernFalse
 		FunctionStorage extendedFunctions;
 
-		// get integer from fragment of FALSE program
-		auto getInteger(int startPosition)
+		// get integer or string from fragment of program
+		auto getForm(alias pred)(int startPosition)
 		{
 			string result;
 			
 			for (int i = startPosition; i < falseProgram.length; i++)
 			{
-				if (falseProgram[i].isDigit)
+				auto a = falseProgram[i];
+
+				if (mixin(pred))
 				{
-					result = result ~ falseProgram[i].to!string;
+					result = result ~ a.to!string;
 				}
 				else
 				{
@@ -46,26 +49,7 @@ class ModernFALSE
 			return result;
 		}
 
-		// get string from fragment of FALSE program
-		auto getString(int startPosition)
-		{
-			string result;
-			
-			for (int i = startPosition; i < falseProgram.length; i++)
-			{
-				if (falseProgram[i] != '\"')
-				{
-					result = result ~ falseProgram[i].to!string;
-				}
-				else
-				{
-					break;
-				}
-			}
-			return result;
-		}
-
-		// get comment from fragment of FALSE program
+		// get comment from fragment of program
 		auto getComment(int startPosition)
 		{
 			int commentLength = 0;
@@ -162,7 +146,7 @@ class ModernFALSE
 			// is digit character ?
 			if (current.isDigit)
 			{
-				string number = getInteger(i);
+				string number = getForm!"isDigit(a)"(i);
 				stack.push(number);
 				i = i + number.length.to!int - 1;
 			}
@@ -304,33 +288,33 @@ class ModernFALSE
 							break;
 						// write integer
 						case '.':
-							try
+							if (stack.empty)
+							{
+								TerminalWriting.error("Empty stack");
+								return;
+							}
+							else
 							{
 								string result = stack.pop;
 								stdout.write(result);
-							}
-							catch (Throwable)
-							{
-								error(ERROR_MESSAGE.EMPTY_STACK);
-								return;
-							}
+							}							
 							break;
 						// write character
 						case ',':
-							try
+							if (stack.empty)
+							{
+								TerminalWriting.error("Empty stack");
+								return;
+							}
+							else
 							{
 								string value = stack.pop;
 								stdout.write(value.parse!int.to!char);
 							}
-							catch(Throwable)
-							{
-								error(ERROR_MESSAGE.EMPTY_STACK);
-								return;
-							}
 							break;
 						// string
 						case '\"':
-							string s = getString(i+1);
+							string s = getForm!` a != '\"'`(i+1);
 							stdout.write(s);
 							i = i + s.length.to!int + 1;
 							break;
@@ -393,9 +377,13 @@ class ModernFALSE
 							}
 							else
 							{
-								error(ERROR_MESSAGE.NOT_IMPLEMENTED);
+								TerminalWriting.error("This function is not implemented");
 								return;
 							}
+							break;
+						// move nth element to top
+						case '<':
+							stack.move;
 							break;
 						// another character
 						default:
@@ -405,8 +393,6 @@ class ModernFALSE
 			}
 			i++;
 		}
-		// empty writing
-		//writeln;
 	}
 
 	// reset interpreter

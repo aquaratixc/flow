@@ -86,6 +86,16 @@ class Stack(T)
 			push(elements[$-n-1]);
 		}
 
+		// move n-th element to the top
+		void move()
+		{
+			import std.conv : to;
+			int n = pop.to!int;
+			T item = elements[$-n-1];
+			elements = elements[0..$-n-1] ~ elements[$-n..$];
+			push(item);
+		}
+
 		// clear stack
 		void clear()
 		{

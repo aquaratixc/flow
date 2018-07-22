@@ -1,0 +1,2 @@
+Flow version %1$s (FALSE programming language dialect)
+by Oleg Bakharev (D implementation), Ryan Holstien (Scala FALSE implementation);

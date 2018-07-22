@@ -1,6 +1,6 @@
-Flow language reference
+%1$sFlow language reference%2$s
 
-Flow is a simple stacked programming language, with a simple but strange looking syntax. 
+%1$sFlow%2$s is a simple stack-based programming language, with a simple but strange looking syntax. 
 Flow is a descendant of the FALSE programming language, and many programs on FALSE also work in Flow, after making some changes. 
 
 First of all, Flow uses only ASCII characters, which you can be sure of after reading this brief help and does not use the assembler insertion command (it is used to call extension functions). 
@@ -9,20 +9,20 @@ These features make Flow a more practical language compared to its predecessor a
 
 Flow has flow :)
 
-Data types:
+%1$sData types:%2$s
 	integer (for example: 0, 34, 23)
 	characters (for example: 'A, '0, '-)
 
 	Pay attention to the following fact: you can not directly put a negative value on the stack, indicating the minus sign before the number itself. Instead, you must put the unsigned minus number on the stack, and then apply the unary minus operation.
 
-Math operations:
+%1$sMath operations:%2$s
 	+ addition          (for example, 1 2 + adds 1 and 2)
 	- subtraction       (for example, 1 2 - subtracts 1 of 2)
 	* multiplication    (for example, 1 2 * multiplies 1 by 2)
 	/ division			(for example, 1 2 / divides 1 by 2)
 	_ unary minus		(for example, 1_ change sign of 1)
 
-Comparison operations:
+%1$sComparison operations:%2$s
 	= equals to 		(for example, 1 2 = equals 0, i.e false)
 	> greather than     (for example, 1 2 > equals 0, i.e false)
 
@@ -30,19 +30,20 @@ Comparison operations:
 
 	Note. Flow does not have a separate operation for inequality, however, you can emulate it by using a logical negation of equality.
 
-Logical operations:
+%1$sLogical operations:%2$s
 	~ logical NOT
 	& logical AND
 	| logical OR
 
-Stack operations:
+%1$sStack operations:%2$s
 	$	duplicate top stack item					(for example, 1 $ equals 1 1)
 	%	drop top stack items       					(for example, 1 2 % equals 1)
 	\	swap two topmost stack items				(for example, 1 2 \ equals 2 1)
 	@	rotate three topmost stack items			(for example, 1 2 3 @ equals 2 3 1)
 	(	copy n-th stack element to top of stack     (for example, 7 8 9 2 ( equals 7 8 9 7)
+	<	move n-th stack element to top of stack 	(for example, 7 8 9 2 < equals 8 9 7)
 
-Global variables:
+%1$sGlobal variables:%2$s
 	In Flow, you can use variables, however, they are global and the whole program sees them. 
 	In addition, variables in Flow can only have one-letter names, but Flow itself distinguishes the case of characters, so instead of 26 variables (names are given in letters of the English alphabet), you get 52 variables at your disposal!
 
@@ -50,7 +51,7 @@ Global variables:
 	; push variable value onto stack 				(for example, a; pushes value of a onto stack)
 	variable_name push variable name onto stack 	(for example, a pushes a onto stack without value extraction)
 
-Lambda-expression:
+%1$sLambda-expression:%2$s
 	In Flow, any expression enclosed in [ and ] is a lambda expression. 
 	All lambda expressions in Flow operate on the stack and therefore do not need arguments, as well as return values.
 	The square brackets put the expression enclosed in the stack, which also means the ability to assign a variable expression and also the ability to pass one expression to another.
@@ -65,7 +66,7 @@ Lambda-expression:
 		[1+]i: 	create increment function and assigns them to i
 		2i;!    push 2 onto stack and apply function i to them
 
-Control structures:
+%1$sControl structures:%2$s
 	Flow has two control structures, if and while, which are denoted by signs ? and #.
 	
 	condition_expression[result_expression]? 	(for example, a;=2[1+]? if a equals 2, than increment top of stack)
@@ -76,7 +77,7 @@ Control structures:
 	Example of this idiom:
 		a;1=$["true"]?~["false"]? if a equals 1, print "true", else print "false"
 
-Input/Output
+%1$sInput/Output%2$s
 	In Flow, there are a few simple commands to provide some input / output operations. 
 	The first thing to remember is that I / O streams are buffered and sometimes need to be flush.
 
@@ -86,16 +87,16 @@ Input/Output
 	^ read character from stdin 					(for example, ^ ,  prints entered character to stdout)
 	"" print string	to stdout						(for example, "test" prints test to stdout)
 
-Strings:
+%1$sStrings:%2$s
 	Unfortunately, Flow does not have line support, however, you can print a line by placing it in double quotes. 
 	Also, the string can not be put on the stack, but the string can be part of the lambda expression.
 
-Comments:
+%1$sComments:%2$s
 	Flow has built-in support for multi-line and single-line comments, which are indicated by including a comment line in curly braces.
 
 	{comment_text} create comment for fragment of program
 
-Extended function:
+%1$sExtended function:%2$s
 	Unlike its predecessor, the FALSE programming language, Flow does not support one of the commands, denoted as an oblique apostrophe (`). In FALSE, this command was used to insert assembler code, in Flow this command calls one of the built-in predefined extension functions.
 	In order to use any of the extension functions, it is necessary to put its arguments on the stack, then the function number on the stack and call the extended function, specifying the `.
 
@@ -110,7 +111,7 @@ Extended function:
 	The file itself is an excellent example of creating extension functions and is well commented on.
 
 
-Examples of Flow programs:
+%1$sExamples of Flow programs%2$s
 	{16 Fibbonacci numbers}
 	0i:1a:1b:[i;16=~][a;$.", "$b;$a:+b:i;1+i:]#"..."
 	
@@ -134,3 +135,17 @@ Examples of Flow programs:
 	
 	{Alphabet}
 	[32+]c:65a:a;26+b:[a;b;=~][a;$$,32+,1+a:]#
+
+
+%1$sLinks:%2$s
+	FALSE programming language:
+	http://strlen.com/false-language/
+
+	FALSE documentation:   
+	http://strlen.com/files/lang/false/false.txt
+
+	LightHouse Software website:
+	http://lhs-blog.info
+
+	Flow repository:
+	https://github.com/aquaratixc/flow

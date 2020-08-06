@@ -106,7 +106,7 @@ class Flow
 			return result;
 		}
 
-			// add program fragment
+		// add program fragment
 		auto addToProgram(int position, string program, string func)
 		{
 			string programBegin = program[0..position+1];
@@ -199,16 +199,10 @@ class Flow
 								stack.push("0");
 							}
 							break;
-						// logical not
+						// bitwise not
 						case '~':
-							if (stack.pop == "0")
-							{
-								stack.push("-1");
-							}
-							else
-							{
-								stack.push("0");
-							}
+							int a = stack.pop.to!int;
+							stack.push((~a).to!string);
 							break;
 						// greather than
 						case '>':
@@ -223,31 +217,17 @@ class Flow
 								stack.push("0");
 							}
 							break;
-						// logical and
+						// bitwise and
 						case '&':
 							int a = stack.pop.to!int;
 							int b = stack.pop.to!int;
-							if ((a == 0) || (b == 0))
-							{
-								stack.push("0");
-							}
-							else
-							{
-								stack.push("-1");
-							}
+							stack.push((a & b).to!string);
 							break;
-						// logical or
+						// bitwise or
 						case '|':
 							int a = stack.pop.to!int;
 							int b = stack.pop.to!int;
-							if ((a == -1) || (b == -1))
-							{
-								stack.push("-1");
-							}
-							else
-							{
-								stack.push("0");
-							}
+							stack.push((a | b).to!string);
 							break;
 						// duplicate
 						case '$':
@@ -297,7 +277,7 @@ class Flow
 							{
 								string result = stack.pop;
 								stdout.write(result);
-							}							
+							}					
 							break;
 						// write character
 						case ',':

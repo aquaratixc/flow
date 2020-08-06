@@ -87,8 +87,10 @@ auto startREPL(Flow interpreter)
 		string command = to!string(expression);
 		
 		// interpreters command
-		switch (command.strip.toLower)
+		switch (command.strip.toLower.chomp)
 		{
+			case "":
+				break;
 			// about program
 			case ":about":
 				write(ABOUT);
@@ -136,7 +138,14 @@ auto startREPL(Flow interpreter)
 				}
 				catch(Throwable)
 				{
-					TerminalWriting.error("Invalid command(s)");
+					if (previousCommand != (cast(char) 10).to!string)
+					{
+						TerminalWriting.error("Invalid command(s)");
+					}
+					else
+					{
+						previousCommand = "";
+					}
 				}
 				break;
 		}
